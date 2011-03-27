@@ -9,6 +9,7 @@ body{
     margin-right: auto;
     margin-top: 3%;
     text-align: center;
+    display: none;
 }
 #info{
     position: absolute;
@@ -74,4 +75,67 @@ body{
 #partner3{
     margin: 0;
     border: 0;
+}
+
+/* Tracker */
+#tracker{
+    border: 1px solid #CCC;
+    width: 80em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tracker table{
+    padding-left: 3px;
+}
+
+#tracker .header td{
+    font-size: 30px;
+    padding-right: 15px;
+    border-bottom: 2px solid #EEEEEF;
+}
+
+#tracker .section-end{
+    padding-right: 50px;
+}
+
+#tracker td{
+    font-size: 30px;
+    width: 2%;
+    padding: 3px;
+}
+
+#tracker .red{
+    background-color: #FE3F44;
+    padding: 5px;
+    color: white;
+}
+
+#tracker .blue{
+    background-color: #4671D5;
+    padding: 5px;
+    color: white;
+}
+
+#tracker input{
+    width: 130px;
+}
+
+#tracker .input td{
+    border-bottom: 0;
+}
+
+#tracker .input .match{
+     padding-right: 39px;
+}
+
+#tracker .input .end{
+    padding-right: 12px !important;
+}
+
+#tracker .input .blue input, #tracker .input .red input{
+    width: 140px;
+}
+#tracker .input .blue, #tracker .input .red{
+    padding-right: 0px;
 }

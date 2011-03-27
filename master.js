@@ -1,4 +1,5 @@
 $(function(){
+    var ourTeam = "3128";
     var matches = [
         {
             "match" : 87,
@@ -7,26 +8,14 @@ $(function(){
             "partner1" : "3128",
             "partner2" : "702",
             "partner3" : "1717",
+            "blue1" : "3128",
+            "blue2" : "702",
+            "blue3" : "1717",
+            "red1" : "3128",
+            "red2" : "702",
+            "red3" : "1717",
             "complete" : false
         },
-        {
-            "match" : 101,
-            "alliance" : "blue",
-            "time" : "2:58 PM",
-            "partner1" : "3128",
-            "partner2" : "689",
-            "partner3" : "1",
-            "complete" : false
-        },
-        {
-            "match" : 111,
-            "alliance" : "red",
-            "time" : "2:59 PM",
-            "partner1" : "3128",
-            "partner2" : "504",
-            "partner3" : "3120",
-            "complete" : false
-        }
     ];
 
     var currentMatch = false;
@@ -116,8 +105,74 @@ $(function(){
         return next;
     }
 
+    function loadMatches(){
+        var header = '<table cellpadding="0" cellspacing="0"><tr class="header"><td class="match">Match</td><td class="time">Time</td><td class="blue">Blue 1</td><td class="blue">Blue 2</td><td class="blue">Blue 3</td><td class="red">Red 1</td><td class="red">Red 2</td><td class="red">Red 3</td></tr></table>';
+
+        var table = $(header);
+        var len = matches.length;
+        for(var i=0; i < len; i++){
+            var match = matches[i];
+            var data = $("<tr>");
+            $(data).append($("<td>", { "class" : "match", "text" : match.match}));
+            $(data).append($("<td>", { "class" : "time", "text" : match.time}));
+            $(data).append($("<td>", { "class" : "blue", "text" : match.blue1}));
+            $(data).append($("<td>", { "class" : "blue", "text" : match.blue2}));
+            $(data).append($("<td>", { "class" : "blue", "text" : match.blue3}));
+            $(data).append($("<td>", { "class" : "red", "text" : match.red1}));
+            $(data).append($("<td>", { "class" : "red", "text" : match.red2}));
+            $(data).append($("<td>", { "class" : "red", "text" : match.red3}));
+            $(table).append(data);
+        }
+
+        $("#tracker table:first").replaceWith(table);
+    }
+
+    function addMatch(){
+
+        // Match Number
+        var match = {};
+
+        match.match = $("#input_match").val();
+        match.time = $("#input_time").val();
+        match.blue1 = $("#input_blue1").val();
+        match.blue2 = $("#input_blue2").val();
+        match.blue3 = $("#input_blue3").val();
+        match.red1 = $("#input_red1").val();
+        match.red2 = $("#input_red2").val();
+        match.red3 = $("#input_red3").val();
+
+        if(match.blue1 == ourTeam || match.blue2 == ourTeam || match.blue3 == ourTeam){
+            match.alliance = "blue";
+            match.partner1 = match.blue1;
+            match.partner2 = match.blue2;
+            match.partner3 = match.blue3;
+        }
+        else if(match.red1 == ourTeam || match.red2 == ourTeam || match.red3 == ourTeam){
+            match.alliance = "red";
+            match.partner1 = match.red1;
+            match.partner2 = match.red2;
+            match.partner3 = match.red3;
+        }
+        else{
+            match.alliance = "NA"
+            match.partner1 = "-";
+            match.partner2 = "-";
+            match.partner3 = "-";
+        }
+
+        matches[matches.length] = match;
+
+        loadMatches();
+
+    }
+
     nextMatch();
+    loadMatches();
     $("#countdown").click(function(){
         nextMatch();
+    })
+    $("#addMatch").click(function(){
+        addMatch();
+        return false;
     })
 })

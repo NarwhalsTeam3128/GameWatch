@@ -2,12 +2,20 @@
   <head>
     <title></title>
     <script src="jquery.js"></script>
+    <script src="json.js"></script>
+    <script src="storage.js"></script>
     <script src="master.js"></script>
+    <script src="sorttable.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
       <div id="main">
+          <div id="bar">
+              <a href="#watcher" id="showWatcher">Watcher</a>
+              <a href="#tracker" id="showTracker">Tracker</a>
+          </div>
+          <div id="bar-drop">&nbsp;</div>
           <div id="watcher">
               <div id="info">
                   <div id="alliance" class="blue">
@@ -33,7 +41,7 @@
               </div>
           </div>
           <div id="tracker">
-              <table cellspacing="0" cellpadding="0">
+              <table cellspacing="0" cellpadding="0" class="sortable">
                   <tr class="header">
                       <td class="match">Match</td>
                       <td class="time">Time</td>

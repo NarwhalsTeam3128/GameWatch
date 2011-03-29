@@ -2,7 +2,7 @@ $(function(){
     var ourTeam = "3128";
     var matches = [
         {
-            "match" : 87,
+            "match" : 0,
             "alliance" : "red",
             "time" : "2:57 PM",
             "partner1" : "3128",
@@ -17,6 +17,17 @@ $(function(){
             "complete" : false
         },
     ];
+    
+
+    var storage = Storage(window);
+    var prev = storage.load("gameWatcher");
+    if(prev != false){
+        matches = prev;
+    }else{
+        storage.save("gameWatcher", matches);
+    }
+
+
 
     var currentMatch = false;
 
@@ -52,17 +63,15 @@ $(function(){
         if(match == -1){
             var len = matches.length;
             for(var i=0; i < len; i++){
-                
                 matches[i].complete = false;
             }
             currentMatch = {
                 "match" : 0
             };
-            match = getNextMatch();
+            match = 0;
         }
 
         matches[match].complete = true;
-        //console.log("Match " + matches[match].match + " selected");
         displayMatch(matches[match]);
     }
 
@@ -106,7 +115,7 @@ $(function(){
     }
 
     function loadMatches(){
-        var header = '<table cellpadding="0" cellspacing="0"><tr class="header"><td class="match">Match</td><td class="time">Time</td><td class="blue">Blue 1</td><td class="blue">Blue 2</td><td class="blue">Blue 3</td><td class="red">Red 1</td><td class="red">Red 2</td><td class="red">Red 3</td></tr></table>';
+        var header = '<table class="sortable" cellpadding="0" cellspacing="0"><tr class="header"><td class="match">Match</td><td class="time">Time</td><td class="blue">Blue 1</td><td class="blue">Blue 2</td><td class="blue">Blue 3</td><td class="red">Red 1</td><td class="red">Red 2</td><td class="red">Red 3</td></tr></table>';
 
         var table = $(header);
         var len = matches.length;
@@ -162,17 +171,39 @@ $(function(){
 
         matches[matches.length] = match;
 
+        var len = matches.length;
+        for(var i=0; i < len; i++){
+            matches[i].complete = false;
+        }
+
+        storage.save("gameWatcher", matches);
+
         loadMatches();
 
     }
 
+    
+
     nextMatch();
     loadMatches();
+
     $("#countdown").click(function(){
+        alert("Hello");
         nextMatch();
-    })
+    });
     $("#addMatch").click(function(){
         addMatch();
         return false;
-    })
+    });
+    $("#showWatcher").click(function(){
+        $("#watcher").show();
+        $("#tracker").hide();
+    });
+    $("#showTracker").click(function(){
+        $("#watcher").hide();
+        $("#tracker").show();
+    });
+    window.nextMatch = function(){
+        nextMatch();
+    }
 })

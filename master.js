@@ -26,9 +26,8 @@ $(function(){
     }else{
         storage.save("gameWatcher", matches);
     }
-
-
-
+    console.log(matches);
+    
     var currentMatch = false;
 
     function displayMatch(match){
@@ -132,6 +131,7 @@ $(function(){
             $(data).append($("<td>", { "class" : "red", "text" : match.red1}));
             $(data).append($("<td>", { "class" : "red", "text" : match.red2}));
             $(data).append($("<td>", { "class" : "red", "text" : match.red3}));
+            $(data).click(deleteMatch);
             $(table).append(data);
         }
 
@@ -184,6 +184,19 @@ $(function(){
 
     }
 
+    var deleteMatch = function(){
+        var match = parseInt($(this).children("td:first").text(), 10);
+        var len = matches.length;
+        for(var i=0; i < len; i++){
+            if(matches[i]["match"] == match)
+            {
+                matches.splice(i, 1);
+                storage.save("gameWatcher", matches);
+                loadMatches();
+                return;
+            }
+        }
+    }
     
 
     nextMatch();

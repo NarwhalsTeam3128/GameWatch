@@ -52,7 +52,7 @@ $(function(){
     }
 
     function nextMatch(){
-
+        console.log(matches);
         if(currentMatch == false){
             currentMatch = {
                 "match": 0
@@ -79,7 +79,7 @@ $(function(){
         var current = currentMatch.match;
 
         var next = -1;
-        var nextLength = 100;
+        var nextLength = 10000;
 
         var len = matches.length;
         for(var i=0; i<len; i++){
@@ -110,6 +110,8 @@ $(function(){
                 }
             }
         }
+
+        //console.log("Match " + next + " picked.");
 
         return next;
     }
@@ -188,7 +190,6 @@ $(function(){
     loadMatches();
 
     $("#countdown").click(function(){
-        alert("Hello");
         nextMatch();
     });
     $("#addMatch").click(function(){

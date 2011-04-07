@@ -68,7 +68,7 @@ body{
     border: 0;
 }
 #countdown{
-    font-size: 140px;
+    font-size: 90px;
     clear: both;
     padding-top: 50px;
     padding-bottom: 50px;
@@ -137,8 +137,12 @@ body{
     border-bottom: 0;
 }
 
-#tracker .input .match{
-     padding-right: 36px;
+#tracker .input .time{
+     width: 102px;
+}
+#tracker .input .time input{
+     position: relative;
+     top: -15px;
 }
 
 #tracker .input .end{

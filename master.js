@@ -4,7 +4,7 @@ $(function(){
         {
             "match" : 0,
             "alliance" : "red",
-            "time" : "2:57 PM",
+            "time" : "Wed Dec 31 1969 16:00:00 GMT-0800 (PST)",
             "partner1" : "3128",
             "partner2" : "702",
             "partner3" : "1717",
@@ -26,7 +26,6 @@ $(function(){
     }else{
         storage.save("gameWatcher", matches);
     }
-    console.log(matches);
     
     var currentMatch = false;
 
@@ -34,7 +33,7 @@ $(function(){
 
         currentMatch = match;
 
-        $("#countdown").text("Match #" + match.match);
+        $("#countdown").html($.timeago(new Date(match.time)));
         $("#alliance").text(match.alliance);
         $("#alliance").removeClass("red");
         $("#alliance").removeClass("blue");
@@ -43,7 +42,12 @@ $(function(){
         }else{
             $("#alliance").addClass("blue");
         }
-        $("#time").text(match.time);
+        var d = new Date(match.time);
+        var string = d.getHours() + ":" + d.getMinutes() + " AM";
+        if(d.getHours() > 12){
+            string = (d.getHours() - 12) + ":" + d.getMinutes() + " PM";
+        }
+        $("#time").text(string);
         $("#partner1").text(match.partner1);
         $("#partner2").text(match.partner2);
         $("#partner3").text(match.partner3);
@@ -123,14 +127,20 @@ $(function(){
         for(var i=0; i < len; i++){
             var match = matches[i];
             var data = $("<tr>");
-            $(data).append($("<td>", { "class" : "match", "text" : match.match}));
-            $(data).append($("<td>", { "class" : "time", "text" : match.time}));
-            $(data).append($("<td>", { "class" : "blue", "text" : match.blue1}));
-            $(data).append($("<td>", { "class" : "blue", "text" : match.blue2}));
-            $(data).append($("<td>", { "class" : "blue", "text" : match.blue3}));
-            $(data).append($("<td>", { "class" : "red", "text" : match.red1}));
-            $(data).append($("<td>", { "class" : "red", "text" : match.red2}));
-            $(data).append($("<td>", { "class" : "red", "text" : match.red3}));
+            $(data).append($("<td>", {"class" : "match", "text" : match.match}));
+            var d = new Date(match.time);
+            var string = d.getHours() + ":" + d.getMinutes() + " AM";
+            if(d.getHours() > 12){
+                string = (d.getHours() - 12) + ":" + d.getMinutes() + " PM";
+            }
+
+            $(data).append($("<td>", {"class" : "time", "text" : string}));
+            $(data).append($("<td>", {"class" : "blue", "text" : match.blue1}));
+            $(data).append($("<td>", {"class" : "blue", "text" : match.blue2}));
+            $(data).append($("<td>", {"class" : "blue", "text" : match.blue3}));
+            $(data).append($("<td>", {"class" : "red", "text" : match.red1}));
+            $(data).append($("<td>", {"class" : "red", "text" : match.red2}));
+            $(data).append($("<td>", {"class" : "red", "text" : match.red3}));
             $(data).click(deleteMatch);
             $(table).append(data);
         }
@@ -144,7 +154,16 @@ $(function(){
         var match = {};
 
         match.match = $("#input_match").val();
-        match.time = $("#input_time").val();
+        if(match.match == ""){
+            return;
+        }
+        var t = new Date();
+        console.log(t);
+        t.setHours(parseInt($("#input_hour").val(), 10));
+        t.setMinutes(parseInt($("#input_minute").val(), 10));
+        match.time = t.toString();
+        console.log(t);
+        
         match.blue1 = $("#input_blue1").val();
         match.blue2 = $("#input_blue2").val();
         match.blue3 = $("#input_blue3").val();
@@ -197,6 +216,42 @@ $(function(){
             }
         }
     }
+
+    var displayCurrentTime = function(){
+        var date = new Date();
+
+        var min = date.getMinutes();
+        if(min < 15){
+            //date.setMinutes((min - 10) + 60);
+            //date.setHours(date.getHours() - 1)
+        }else{
+            //date.setMinutes((min - 10));
+        }
+
+        var string = date.getHours() + ":" + date.getMinutes() + " AM";
+        if(date.getHours() > 12){
+            string = (date.getHours() - 12) + ":" + date.getMinutes() + " PM";
+        }
+
+        $("#currentTime").text(string + " (10 minutes late)");
+    }
+    setInterval(displayCurrentTime, 100);
+
+    var displayMatchTime = function(){
+        var date = new Date(currentMatch.time);
+
+        var min = date.getMinutes();
+        if(min > 45){
+            date.setMinutes((min + 1) - 60);
+            //date.setHours(date.getHours() + 1)
+        }else{
+            //date.setMinutes((min ));
+        }
+
+        $("#countdown").html("Match #" + currentMatch.match + " starts " + $.timeago(date));
+    }
+    setInterval(displayMatchTime, 100);
+
     
 
     nextMatch();
